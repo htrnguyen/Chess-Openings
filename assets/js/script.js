@@ -14,15 +14,6 @@ $(document).ready(function () {
     updateBoardSize()
 })
 
-function resizeBoard() {
-    var boardSize = Math.min($(window).height(), $(window).width())
-    board.resize(boardSize)
-}
-
-// Gọi hàm khi trang web được tải xong và khi cửa sổ thay đổi kích thước
-$(window).resize(resizeBoard)
-$(document).ready(resizeBoard)
-
 // ----------------- Chess Game -----------------
 var board = null
 var game = new Chess()
