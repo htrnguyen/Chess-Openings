@@ -44,28 +44,6 @@
             font-family: Arial, sans-serif;
         }
 
-        html,
-        body {
-            height: 100%; /* Cố định chiều cao của trang */
-            overflow: hidden; /* Ngăn không cho trang cuộn */
-        }
-
-        .container {
-            overflow: auto; /* Chỉ cho phép cuộn nội dung bên trong container */
-            height: 100%; /* Đặt chiều cao tối đa để phù hợp với chiều cao của trang */
-        }
-
-        #board-container {
-            /* Cố định bàn cờ trong một vị trí tương đối */
-            position: relative;
-        }
-
-        #board {
-            /* Thiết lập bàn cờ để không di chuyển khi trang cuộn */
-            position: sticky;
-            top: 0; /* Hoặc bất kỳ giá trị nào bạn muốn để cố định bàn cờ trên cùng hoặc gần trên cùng của trang */
-        }
-
         @media (max-width: 768px) {
             #board-container {
                 width: 100%;

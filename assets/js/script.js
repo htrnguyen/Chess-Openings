@@ -13,14 +13,15 @@ function updateBoardSize() {
 $(document).ready(function () {
     updateBoardSize()
 })
+// Đính kèm sự kiện 'touchstart' vào bàn cờ
+$('#board').on('touchstart mousedown', function (e) {
+    e.preventDefault() // Ngăn chặn hành vi cuộn mặc định
+})
 
-$(document).on(
-    'touchmove',
-    function (e) {
-        e.preventDefault()
-    },
-    {passive: false}
-)
+// Nếu bạn sử dụng sự kiện kéo thả của HTML5:
+$('#board .square-55d63').on('dragstart', function (e) {
+    e.preventDefault() // Ngăn chặn hành vi cuộn mặc định
+})
 
 // ----------------- Chess Game -----------------
 var board = null
