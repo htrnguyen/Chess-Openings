@@ -44,21 +44,26 @@
             font-family: Arial, sans-serif;
         }
 
-        @media (max-width: 768px) {
-            #board-container {
-                width: 100%;
-            }
+        #board {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        @media (max-width: 600px) {
             #board {
-                width: calc(100vw - 20px);
+                max-width: 300px;
             }
         }
 
-        @media (min-width: 769px) {
-            #board-container {
-                width: 66.666%;
-            }
+        @media (min-width: 601px) and (max-width: 900px) {
             #board {
-                width: calc(66.666vw - 20px);
+                max-width: 350px;
+            }
+        }
+
+        @media (min-width: 901px) {
+            #board {
+                max-width: 450px;
             }
         }
     </style>
