@@ -14,6 +14,14 @@ $(document).ready(function () {
     updateBoardSize()
 })
 
+$(document).on(
+    'touchmove',
+    function (e) {
+        e.preventDefault()
+    },
+    {passive: false}
+)
+
 // ----------------- Chess Game -----------------
 var board = null
 var game = new Chess()
