@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chess With Openings</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            Z
+        />
+    </head>
+    <style>
+        #status {
+            color: red;
+            margin-top: 10px;
+            font-size: 1.5em; 
+        }
+        #game-title {
+            text-align: center;
+            font-size: 3em;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .author-credit {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            z-index: 1000;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            #board-container {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            #side-options {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #board-container {
+                width: 66.666%;
+            }
+            #side-options {
+                width: 33.333%;
+            }
+        }
+    </style>
+    <body>
+        <div class="container">
+            <h1 id="game-title">Chess Game</h1>
+            <div class="row">
+                <div class="col-md-8" id="board-container">
+                    <div id="board" style="width: 100%"></div>
+                </div>
+                <div class="col-md-4" id="side-options">
+                    <div id="game-options">
+                        <h3>Select Color</h3>
+                        <select id="color-select" class="form-control mb-2">
+                            <option value="white">White</option>
+                            <option value="black">Black</option>
+                        </select>
+                        <h3>Select Opening</h3>
+                        <select
+                            id="opening-select"
+                            class="form-control mb-2"
+                        ></select>
+
+                        <button
+                            id="startBtn"
+                            class="btn btn-primary btn-block mt-5"
+                        >
+                            Start Game
+                        </button>
+                        <button id="resetBtn" class="btn btn-warning btn-block">
+                            Reset Game
+                        </button>
+
+                        <button id="clearBtn" class="btn btn-warning btn-block">
+                            Clear Board
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        id="status"
+                        class="d-flex justify-content-center align-items-center"
+                    ></div>
+                </div>
+            </div>
+        </div>
+        <audio
+            id="moveSound"
+            src="assets/audio/castle.mp3"
+            preload="auto"
+        ></audio>
+        <div class="author-credit">Trong Nguyen</div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+        <script src="assets/js/script.js"></script>
+    </body>
+</html>
