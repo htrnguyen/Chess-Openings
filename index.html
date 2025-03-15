@@ -3,287 +3,703 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Chess With Openings</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" Z />
+    <meta name="description" content="Chess game with opening moves practice">
+    <meta name="keywords" content="chess, chess openings, chess game, chess practice">
+    <meta name="author" content="Your Name">
+    <meta property="og:title" content="Chess With Openings">
+    <meta property="og:description" content="Practice chess openings online">
+    <meta property="og:type" content="website">
     <style>
-        #status {
-            color: red;
-            margin-top: 10px;
-            font-size: 1.5em;
+        /* Reset toàn bộ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        #game-title {
-            text-align: center;
-            font-size: 3em;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .author-credit {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.9em;
-            z-index: 1000;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
-        }
-
-        @media (max-width: 768px) {
-            #board-container {
-                width: 100%;
-            }
-
-            #board {
-                width: calc(100vw - 20px);
-            }
-        }
-
-        @media (min-width: 769px) {
-            #board-container {
-                width: 66.666%;
-            }
-
-            #board {
-                width: calc(66.666vw - 20px);
-            }
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        #board-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 576px) {
-            #board {
-                width: 100% !important;
-                max-width: 350px;
-                margin: 0 auto;
-            }
-
-            #game-title {
-                font-size: 2em;
-            }
-        }
-
-        @media (min-width: 577px) and (max-width: 768px) {
-            #board {
-                width: 450px !important;
-                margin: 0 auto;
-            }
-        }
-
-        @media (min-width: 769px) {
-            #board {
-                width: 600px !important;
-                margin: 0 auto;
-            }
-        }
-
-        .controls-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-        .btn {
-            margin: 5px 0;
-        }
-
-        #status {
-            color: red;
-            margin: 15px auto;
-            font-size: 1.2em;
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .author-credit {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            z-index: 1000;
-        }
-
+        /* Cố định body */
         body {
-            background-color: #f5f5f5;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #f0f2f5;
         }
 
+        /* Container chính */
         .main-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 20px;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 5px;
+            padding: 5px;
+        }
+
+        /* Header nhỏ gọn */
+        .header {
+            padding: 5px;
+            text-align: center;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         #game-title {
-            color: #2c3e50;
-            font-weight: bold;
-            margin-bottom: 30px;
+            font-size: 1rem;
+            margin: 0;
+            color: var(--dark);
+            font-weight: 500;
         }
 
+        /* Game area tối ưu */
+        .game-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 25px;
+            overflow: hidden;
+        }
+
+        /* Board container */
+        #board-container {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Bàn cờ cố định */
+        #board {
+            width: min(65vh, 65vw) !important;
+            height: min(65vh, 65vw) !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Side options */
         #side-options {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            height: fit-content;
-        }
-
-        .form-group h3 {
-            color: #2c3e50;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-        }
-
-        .form-control {
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: #4a90e2;
-            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
-        }
-
-        .btn {
-            border-radius: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 10px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: #4a90e2;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #357abd;
-            transform: translateY(-2px);
-        }
-
-        .btn-warning {
-            background-color: #f39c12;
-            border: none;
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            border: none;
-        }
-
-        .btn:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        #status {
-            background-color: #f8f9fa;
+            position: fixed;
+            top: 45%;
+            right: 0;
+            transform: translateY(-50%) translateX(calc(100% + 20px));
+            height: auto;
+            max-height: 90vh;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.98);
             padding: 15px;
-            border-radius: 8px;
-            margin-top: 25px;
-            color: #2c3e50;
-            font-weight: 500;
+            border-radius: 8px 0 0 8px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        .author-credit {
-            background-color: #2c3e50;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        #side-options.active {
+            transform: translateY(-50%) translateX(0);
         }
 
+        /* Toggle button cho menu */
+        .menu-toggle {
+            display: flex !important;
+            position: fixed;
+            right: 0;
+            top: 45%;
+            transform: translateY(-50%);
+            z-index: 1002;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            width: 20px;
+            height: 40px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            opacity: 0.9;
+        }
+
+        .menu-toggle:hover {
+            opacity: 1;
+            width: 22px;
+        }
+
+        .menu-toggle .fas {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-toggle.active .fas {
+            transform: rotate(180deg);
+        }
+
+        /* Status bar cố định */
+        #status {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background: white;
+        }
+
+        /* Mobile view */
         @media (max-width: 768px) {
-            .main-container {
-                padding: 15px;
-                margin-top: 10px;
+            .game-area {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            #board {
+                width: min(90vh, 90vw) !important;
+                height: min(90vh, 90vw) !important;
             }
 
             #side-options {
-                margin-top: 20px;
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Vô hiệu hóa mọi hiệu ứng */
+        .piece-417db {
+            image-rendering: -webkit-optimize-contrast !important;
+            image-rendering: -moz-crisp-edges !important;
+            image-rendering: crisp-edges !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+            filter: contrast(1.05);
+            cursor: grab;
+        }
+
+        /* Vô hiệu hóa scroll */
+        html, body {
+            overscroll-behavior: none;
+            touch-action: none;
+            -webkit-overflow-scrolling: none;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #60a5fa;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --light: #ffffff;
+            --dark: #1f2937;
+            --board-white: #ffffff;
+            --board-black: #93c5fd;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --hover-light: rgba(255, 255, 255, 0.1);
+            --hover-dark: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Chess Board Colors */
+        .white-1e1d7 {
+            background-color: #fff !important;
+        }
+
+        .black-3c85d {
+            background-color: #7da5d1 !important;
+        }
+
+        /* Chess Pieces Optimization */
+        .piece-417db:hover {
+            transform: scale(1.02);
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .piece-417db:active {
+            cursor: grabbing;
+            transform: scale(1);
+        }
+
+        /* Controls Panel */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group h3 {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            font-size: 13px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 6px;
+        }
+
+        /* Buttons */
+        .btn-group-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Author Credit */
+        .author-credit {
+            display: none;
+        }
+
+        /* Ensure content fits at any zoom level */
+        @media (min-width: 769px) and (max-height: 600px) {
+            #board {
+                width: min(60vh, 60vw) !important;
+                height: min(60vh, 60vw) !important;
+            }
+        }
+
+        /* Square Highlights */
+        .square-55d63 {
+            background-size: cover !important;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .square-55d63:hover {
+            opacity: 0.95;
+        }
+
+        /* Legal Move Highlights */
+        .highlight-legal {
+            box-shadow: inset 0 0 2px 2px rgba(115, 210, 22, 0.4) !important;
+        }
+
+        .highlight-selected {
+            box-shadow: inset 0 0 2px 2px rgba(52, 101, 164, 0.4) !important;
+        }
+
+        /* Last Move Highlight */
+        .highlight-last-move {
+            background: rgba(255, 255, 0, 0.15) !important;
+        }
+
+        /* Check Highlight */
+        .highlight-check {
+            box-shadow: inset 0 0 2px 2px rgba(204, 0, 0, 0.5) !important;
+        }
+
+        /* Animation Keyframes */
+        @keyframes pieceCapture {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes pieceDrop {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Captured Piece Animation */
+        .captured {
+            animation: pieceCapture 0.3s ease forwards;
+        }
+
+        /* New Piece Drop Animation */
+        .new-piece {
+            animation: pieceDrop 0.3s ease forwards;
+        }
+
+        /* Thêm focus states */
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Thêm loading state */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Cập nhật các breakpoints và responsive styles */
+        
+        /* Extra large screens (>1400px) */
+        @media (min-width: 1400px) {
+            .main-container {
+                max-width: 1400px;
+                margin: 0 auto;
             }
 
-            #game-title {
-                font-size: 1.8em;
-                margin-bottom: 20px;
+            #board {
+                width: min(65vh, 65vw) !important;
+                height: min(65vh, 65vw) !important;
+            }
+
+            #side-options {
+                width: 220px;
+            }
+        }
+
+        /* Large screens (1200px - 1399px) */
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            #board {
+                width: min(70vh, 70vw) !important;
+                height: min(70vh, 70vw) !important;
+            }
+
+            #side-options {
+                width: 200px;
+            }
+        }
+
+        /* Medium screens (992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            #board {
+                width: min(65vh, 65vw) !important;
+                height: min(65vh, 65vw) !important;
+            }
+
+            #side-options {
+                width: 180px;
+            }
+        }
+
+        /* Small screens (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .game-area {
+                gap: 15px;
+            }
+
+            #board {
+                width: min(60vh, 60vw) !important;
+                height: min(60vh, 60vw) !important;
+            }
+
+            #side-options {
+                width: 160px;
+            }
+
+            .form-group h3 {
+                font-size: 12px;
             }
 
             .btn {
-                padding: 8px 16px;
-                font-size: 0.9em;
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+
+        /* Mobile landscape */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .game-area {
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                padding: 5px;
+            }
+
+            #board {
+                width: min(70vh, 50vw) !important;
+                height: min(70vh, 50vw) !important;
+            }
+
+            #side-options {
+                width: 160px;
+                padding: 12px 10px;
+            }
+
+            .btn-group-vertical {
+                gap: 5px;
+            }
+
+            .btn {
+                padding: 5px;
+                font-size: 11px;
+                height: 28px;
+            }
+        }
+
+        /* Mobile portrait */
+        @media (max-width: 767px) and (orientation: portrait) {
+            .header {
+                padding: 5px;
+            }
+
+            #game-title {
+                font-size: 1.2rem;
+            }
+
+            .game-area {
+                flex-direction: column;
+                gap: 10px;
+                padding: 5px;
+            }
+
+            #board {
+                width: min(95vh, 95vw) !important;
+                height: min(95vh, 95vw) !important;
+            }
+
+            #side-options {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100%;
+                width: 250px;
+                padding: 60px 20px 20px;
+                transform: translateX(100%);
+                background: white;
+                transition: transform 0.3s ease;
+                box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            }
+
+            #side-options.active {
+                transform: translateX(0);
+            }
+
+            .btn-group-vertical {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .btn {
+                height: 36px;
+                font-size: 12px;
+            }
+        }
+
+        /* Short screens */
+        @media (max-height: 600px) {
+            .header {
+                padding: 5px;
+            }
+
+            #game-title {
+                font-size: 1rem;
+                margin: 0;
+            }
+
+            .game-area {
+                gap: 10px;
+            }
+
+            #board {
+                width: min(85vh, 45vw) !important;
+                height: min(85vh, 45vw) !important;
+            }
+
+            #side-options {
+                width: 140px;
+            }
+
+            .form-group {
+                margin-bottom: 5px;
+            }
+
+            .btn {
+                height: 28px;
+                font-size: 11px;
+                padding: 0 8px;
+            }
+        }
+
+        /* Ensure minimum sizes */
+        @media (max-width: 320px) {
+            #board {
+                width: 280px !important;
+                height: 280px !important;
+            }
+
+            #side-options {
+                width: 280px;
+            }
+        }
+
+        /* Overlay khi menu mở */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(1px);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        /* Nút đóng menu */
+        .close-menu {
+            display: none;
+        }
+
+        /* Điều chỉnh bàn cờ để không bị che */
+        .game-area {
+            padding-right: 30px;
+        }
+
+        #board {
+            width: calc(min(90vh, 90vw) - 30px) !important;
+            height: calc(min(90vh, 90vw) - 30px) !important;
+        }
+
+        /* Footer nhỏ gọn */
+        .footer {
+            padding: 5px;
+            text-align: center;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .github-link {
+            color: var(--dark);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .github-link:hover {
+            opacity: 1;
+        }
+
+        .github-link i {
+            font-size: 1rem;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .main-container {
+                gap: 3px;
+                padding: 3px;
+            }
+
+            .header {
+                padding: 3px;
+            }
+
+            #game-title {
+                font-size: 0.9rem;
+            }
+
+            .footer {
+                padding: 3px;
+            }
+
+            .github-link {
+                font-size: 0.75rem;
+            }
+
+            .github-link i {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Landscape mode */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .header, .footer {
+                position: absolute;
+                left: 5px;
+                right: 5px;
+                z-index: 10;
+            }
+
+            .header {
+                top: 5px;
+            }
+
+            .footer {
+                bottom: 5px;
+            }
+
+            .game-area {
+                height: 100vh;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="main-container">
-        <h1 id="game-title">Chess Game</h1>
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="menu-overlay"></div>
 
-        <div class="row">
-            <div class="col-md-8" id="board-container">
+    <div class="main-container">
+        <header class="header">
+            <h1 id="game-title">Chess Game</h1>
+        </header>
+
+        <main class="game-area">
+            <div id="board-container">
                 <div id="board"></div>
             </div>
 
-            <div class="col-md-4" id="side-options">
-                <div id="game-options">
-                    <div class="form-group">
-                        <h3>Select Color</h3>
-                        <select id="color-select" class="form-control mb-2">
-                            <option value="white">White</option>
-                            <option value="black">Black</option>
-                        </select>
-                    </div>
+            <div id="side-options">
+                <div class="form-group">
+                    <h3>Color</h3>
+                    <select id="color-select" class="form-control" aria-label="Choose Color">
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <h3>Select Opening</h3>
-                        <select id="opening-select" class="form-control mb-2"></select>
-                    </div>
+                <div class="form-group">
+                    <h3>Opening</h3>
+                    <select id="opening-select" class="form-control"></select>
+                </div>
 
-                    <div class="btn-group-vertical w-100">
-                        <button id="startBtn" class="btn btn-primary mb-2">Start Game</button>
-                        <button id="resetBtn" class="btn btn-warning mb-2">Reset Game</button>
-                        <button id="clearBtn" class="btn btn-danger">Clear Board</button>
-                    </div>
+                <div class="btn-group-vertical">
+                    <button id="startBtn" class="btn btn-primary" aria-label="Start Game">
+                        Start Game
+                    </button>
+                    <button id="resetBtn" class="btn btn-warning">Reset</button>
+                    <button id="clearBtn" class="btn btn-danger">Clear</button>
                 </div>
             </div>
-        </div>
+        </main>
 
-        <div id="status" class="text-center mt-3"></div>
-    </div>
-
-    <div class="author-credit">
-        Trong Nguyen
+        <footer class="footer">
+            <a href="https://github.com/htrnguyen/Chess-Openings" class="github-link" target="_blank">
+                <i class="fab fa-github"></i>
+                <span>View Source</span>
+            </a>
+        </footer>
     </div>
 
     <audio id="moveSound" src="assets/audio/castle.mp3" preload="auto"></audio>
@@ -292,6 +708,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script src="assets/js/script.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vô hiệu hóa mọi sự kiện scroll và touch
+        const events = ['touchmove', 'scroll', 'mousewheel', 'DOMMouseScroll', 'wheel'];
+        events.forEach(event => {
+            window.addEventListener(event, (e) => {
+                e.preventDefault();
+            }, { passive: false });
+        });
+
+        // Vô hiệu hóa zoom
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        document.addEventListener('gesturechange', (e) => e.preventDefault());
+        document.addEventListener('gestureend', (e) => e.preventDefault());
+
+        // Vô hiệu hóa context menu
+        window.oncontextmenu = (e) => e.preventDefault();
+
+        // Thêm class cho các nước đi hợp lệ
+        function addLegalMoveHighlights(square) {
+            const moves = game.moves({square: square, verbose: true});
+            moves.forEach(move => {
+                $(`#board .square-${move.to}`).addClass('highlight-legal');
+            });
+        }
+
+        // Highlight ô vừa được chọn
+        function addSelectedHighlight(square) {
+            $(`#board .square-${square}`).addClass('highlight-selected');
+        }
+
+        // Highlight nước đi cuối cùng
+        function addLastMoveHighlight(from, to) {
+            $(`#board .square-${from}`).addClass('highlight-last-move');
+            $(`#board .square-${to}`).addClass('highlight-last-move');
+        }
+
+        // Highlight vua khi bị chiếu
+        function addCheckHighlight() {
+            const king = game.turn() === 'w' ? 'e1' : 'e8';
+            if (game.in_check()) {
+                $(`#board .square-${king}`).addClass('highlight-check');
+            }
+        }
+
+        // Thêm xử lý menu
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sideOptions = document.getElementById('side-options');
+        const menuOverlay = document.querySelector('.menu-overlay');
+
+        // Chỉ toggle menu khi click nút mũi tên
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            sideOptions.classList.toggle('active');
+        });
+
+        // Ngăn việc đóng menu khi click vào menu
+        sideOptions.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Đóng menu chỉ khi click bên ngoài
+        document.addEventListener('click', function(e) {
+            if (!sideOptions.contains(e.target) && 
+                !menuToggle.contains(e.target) && 
+                sideOptions.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                sideOptions.classList.remove('active');
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>
