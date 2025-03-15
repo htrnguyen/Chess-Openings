@@ -26,6 +26,19 @@
 
 Xem chi tiết các khai cuộc tại đây: [Khai cuộc](./document/Khai_cuoc.pdf)
 
+Bạn có thể thêm/bớt/chỉnh sửa các khai cuộc bằng cách sửa file [data/openings.json](data/openings.json). Các nước đi được ghi theo ký hiệu chuẩn quốc tế:
+
+- Quân tốt: chỉ ghi tên ô (vd: "e4", "d5")
+- Mã: N (vd: "Nf3", "Nc6")
+- Tượng: B (vd: "Bc4", "Be7")
+- Xe: R (vd: "Re1", "Rd8")
+- Hậu: Q (vd: "Qd2", "Qe7")
+- Vua: K (vd: "Ke2", "Kg8")
+- Nhập thành ngắn: "O-O"
+- Nhập thành dài: "O-O-O"
+- Ăn quân: x (vd: "exd5", "Nxe4")
+- Chiếu: + (vd: "Bb4+")
+
 ## Đóng Góp
 
 Mọi đóng góp đều được hoan nghênh! Vui lòng tạo Pull Request hoặc Issue nếu bạn muốn cải thiện dự án.
